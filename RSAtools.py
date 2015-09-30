@@ -22,7 +22,6 @@ class RSAtools :
         while not(test) :
             r = random.getrandbits(length)
             r = (0x1 << (length - 1)) | r | 0x1
-            print (str(r) + '\n')
             test = self.isPrime(r)
         return r
     def isPrime(self, number) :
