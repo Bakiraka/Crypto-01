@@ -41,7 +41,7 @@ products_list = []
 
 #Product generation
 sum = 0
-for i in range(0, number_of_products - 1):
+for i in range(0, number_of_products):
     product_number = random.randrange(0, 100)
     product_name = "Product" + str(product_number)
     #Price generation (kindof random, depending on product name, but always the same)
@@ -54,7 +54,9 @@ for i in range(0, number_of_products - 1):
 invoice_file = open('invoice.txt', 'w')
 invoice_file.write( unique_number + "\n")
 invoice_file.write( str(number_of_products) + "\n")
-for i in range(0, number_of_products - 1):
-    invoice_file.write(products_list[i] + " " + products_list[i+1])
+for i in range(0, number_of_products, 2):
+    invoice_file.write(products_list[i] + " " + products_list[i+1] + " 1")
+    invoice_file.write("\n")
+invoice_file.write(str(sum))
 
 invoice_file.close()

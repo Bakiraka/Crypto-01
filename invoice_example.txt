@@ -1,13 +1,14 @@
-1285156589362881369932461642076133295436112581
-Product72 146
-146
+204361270173411301928370219603087712618028460
+3
+Product12 72 1
+Product34 304 1
+559
 
 ###################################################################
 ####    Example for an invoice file                            ####
-####    number_of_products + 3 lines :                         ####
+####    Number of lines : number_of_products + 2 lines :       ####
 ####    unique id                                              ####
-####    number of products                                     ####
-####    product1 price1                                        ####
-####    product2 price2                                        ####
+####    product1 price1 numberOfProduct1                       ####
+####    product2 price2 numberOfProduct1                       ####
 ####    sum                                                    ####
 ###################################################################
