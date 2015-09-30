@@ -21,7 +21,7 @@ class Facture :
                 liste.append(line)
             cmp += 1
         liste.remove(lastline)
-        sommetotale = float(lastline)
+        sommetotale = int(lastline)
 
     def toString(self) :
         accu = str(uid) + '\n'
