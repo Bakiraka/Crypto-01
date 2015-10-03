@@ -3,10 +3,11 @@
 ###################################################################
 ####    Merchant program generating and invoice                ####
 ####    Arguments (optionals) : Number of products             ####
+####    Output : Invoice generated                             ####
 ####    The invoice will be of the form :                      ####
 ####    unique id                                              ####
-####    product1 price1                                        ####
-####    product2 price2                                        ####
+####    product1 price1 quantityofproduct1                     ####
+####    product2 price2 quantityofproduct1                     ####
 ####    sum                                                    ####
 ###################################################################
 import merchant_tools
