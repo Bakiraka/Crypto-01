@@ -124,14 +124,29 @@ class RSAtools :
         listmess = []
         while (tmp > 0) :
             tmp2 = tmp & 0xFFFFFFFF
-            tmp = tmp >> 63
+            tmp = tmp >> 64
             listmess.append(self.encrypt(pk, tmp2))
         listmess.reverse()
         return listmess
     def decryptblock(self, sk, message) :
         accu = 0
         for i in message :
-            accu <= 63
+            accu <= 64
             tmp |= self.decrypt(sk,i)
             accu = tmp
+        return accu
+    def cryptSkblock (self, sk, message) :
+        tmp = message 
+        listmess = []
+        while (tmp > 0) :
+            tmp2 = tmp & 0xFFFFFFFF
+            tmp = tmp >> 64
+            listmess.append(self.decrypt(sk, tmp2))
+        listmess.reverse()
+        return listmess
+    def decryptPkblock(self, pk, message) :
+        accu = 0
+        for i in message :
+            accu = accu << 64
+            accu |= self.encrypt(pk,i)
         return accu
