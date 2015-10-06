@@ -16,16 +16,22 @@ class FileUtils :
         fileLine.close()
         return line
 
-    def writeKey (self, key, fichier) :
-        fileWrite = open(fichier,'w')
-        fileWrite.write(str(len(key)) + '/n')
+    def formatKey (self, key) :
+        accu = ''
+        accu = str(len(key)) + '\n'
         tmp = 0
         for i in key :
-            fileWrite.write(str(i))
+            accu += str(i) 
             if tmp < len(key) - 1 :
-                fileWrite.write ('/n')
+                accu += '\n'
             tmp = tmp + 1
+        return accu
+    
+    def writeContent(self, string, fichier) :
+        fileWrite = open(fichier,'w')
+        fileWrite.write(string)
         fileWrite.close()
+        
     def readKey (self, fichier, number):
         i = 0
         tmp = []

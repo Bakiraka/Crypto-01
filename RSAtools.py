@@ -119,34 +119,22 @@ class RSAtools :
         return decryptstr
     def str_to_key (self, string) :
         return string.split()
-    def cryptBlock (self, pk, message) :
-        tmp = message 
-        listmess = []
-        while (tmp > 0) :
-            tmp2 = tmp & 0xFFFFFFFF
-            tmp = tmp >> 64
-            listmess.append(self.encrypt(pk, tmp2))
-        listmess.reverse()
-        return listmess
-    def decryptblock(self, sk, message) :
-        accu = 0
-        for i in message :
-            accu <= 64
-            tmp |= self.decrypt(sk,i)
-            accu = tmp
         return accu
-    def cryptSkblock (self, sk, message) :
+    def cryptblock (self, sk, message) :
         tmp = message 
         listmess = []
-        while (tmp > 0) :
-            tmp2 = tmp & 0xFFFFFFFF
+        while (tmp > 0) :            
+            tmp2 = tmp & 0xFFFFFFFFFFFFFFFF
             tmp = tmp >> 64
-            listmess.append(self.decrypt(sk, tmp2))
-        listmess.reverse()
+            decrypt = self.encrypt(sk, tmp2)
+            listmess.append(decrypt)
         return listmess
-    def decryptPkblock(self, pk, message) :
-        accu = 0
+    def decryptblock(self, pk, message) :
+        accu = 0x0
+        j = 0
         for i in message :
-            accu = accu << 64
-            accu |= self.encrypt(pk,i)
+            tmp = self.encrypt(pk,i)
+            tmp = tmp << (64 * j)
+            accu = accu | tmp
+            j = j + 1
         return accu

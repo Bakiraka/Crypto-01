@@ -29,13 +29,12 @@ if __name__ == '__main__' :
     banquesk.write(str(rsaBanque [0])+' '+ str(rsaBanque [2]))
     banquesk.close()
     print([rsaClient [0],rsaClient[1]])
-    clientpkencode = rsa.cryptSkblock(fileUtil.recupKey('banqueSk'), rsaClient [0])
-    clientpkencode2 = rsa.cryptSkblock(fileUtil.recupKey('banqueSk'), rsaClient [1])
-    clientpkdecode = rsa.decryptPkblock(fileUtil.recupKey('banquePk'), clientpkencode)
-    clientpkdecode2 = rsa.decryptPkblock(fileUtil.recupKey('banquePk'), clientpkencode2)
+    clientpkencode = rsa.cryptblock(fileUtil.recupKey('banqueSk'), rsaClient [0])
+    clientpkdecode = rsa.decryptblock(fileUtil.recupKey('banquePk'), clientpkencode)
+    clientpkencode2 = rsa.cryptblock(fileUtil.recupKey('banqueSk'), rsaClient [1])
+    clientpkdecode2 = rsa.decryptblock(fileUtil.recupKey('banquePk'), clientpkencode2)
+    fileUtil.writeContent(fileUtil.formatKey(clientpkencode) + '\n' + fileUtil.formatKey(clientpkencode2), "clientPkEncode")
     print ([clientpkdecode,clientpkdecode2])
-    clientpkencodefile = open('clientPkEncode','w')
-    clientpkencodefile.write(str(clientpkencode) + '\n' + str(clientpkencode2))
-    clientpkencodefile.close()
+
 
     
