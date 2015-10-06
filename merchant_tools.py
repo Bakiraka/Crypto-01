@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 import uuid
 import random
+import os
 
 #basic unique id random generation
 def randomnumber():
-    return random.getrandbits( 150)
+    try:
+        rand = os.urandom(150)
+    except NotImplementedError:
+        rand = random.getrandbits(150)
+    return rand
 
 #guid generation
 def generate_uuid():
