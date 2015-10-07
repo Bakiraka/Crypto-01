@@ -6,8 +6,6 @@
 ####    Arguments : - check file                               ####
 ####                - client's public key                      ####
 ####                - merchant's public key                    ####
-####                - (optional) file that the bank uses to    ####
-####                    verify checks                          ####
 ####    Output : Either that the check is fine or not          ####
 ####    How does a bank check if a check has been cashed       ####
 ####        or not ?                                           ####
@@ -23,25 +21,12 @@ import FileUtils
 import RSAtools
 import os.path
 
-#Checking the number of arguments for the optional file
-checkfile_specified = False
-if( len(sys.argv) >= 5):
-    checkfile_specified = True
-
 #Making sure the arguments and the files are there
 try:
     check_file = open(sys.argv[1], 'r')
     clientkey_file = open(sys.argv[2], 'r')
     merchantkey_file = open(sys.argv[3], 'r')
-    if( checkfile_specified):
-        checkfile = open(sys.argv[4], 'r')
-    else:
-        checkfile = open("checkfile", 'r')
-except (OSError, IOError) as error:
-    print("Error reading file : ", error)
-    sys.exit()
 finally:
-    checkfile.close()
     clientkey_file.close()
     merchantkey_file.close()
 
@@ -56,7 +41,7 @@ if( merchant_key_deciphered != merchant_key_original):
     print("La clé du marchant dans le chèque n'est pas la même que celle fournie !\n")
 
 #Getting client's key ciphered by the bank and bank's private key
-clientkey_ciphered = checkfile.readline()
+clientkey_ciphered = check_file.readline()
 bank_privatekey = FileUtils.recupKey('bankPk')
 #Deciphering the client's key
 clientkey_deciphered = RSAtools.decrypt( bank_privatekey, clientkey_ciphered)
@@ -65,7 +50,7 @@ if( clientkey_deciphered != clientkey_original):
     print("La clé du client dans le chèque n'est pas la même que celle fournie !\n")
 
 #Getting the ciphered uid and sum from the check and deciphering it
-uidciphered = checkfile.readline()
+uidciphered = check_file.readline()
 uiddeciphered = RSAtools.decrypt(clientkey_deciphered,uidciphered)
 
 saved_idandkey = []
