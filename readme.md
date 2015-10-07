@@ -70,3 +70,26 @@ Quand la banque reçoit le chèque, la banque signera le chèque et le gardera e
 5. Programme de la banque : va prendre chèque et effectue la transaction (ou pas)
   - S’assure que le chèque n’est pas une copie d’un chèque déjà déposé
   - Vérifie que le chèque a bien été chiffré par le client
+
+## Fonctionnement des programmes
+
+
+1er programme : init.py
+
+- Génération clé publique/privée banque
+- Génération clé publique/privée client
+- Génération clé publique/privée commerçant
+- Chiffrer la clé publique du client avec la clé privée de la banque
+
+Lancement du programme (Exemple) : python3 init.py
+
+3eme programme : generateCheck.py
+           prend 2 parametres : le fichier contenant la facture
+                      le fichier qui contiendra le cheque
+
+Programme du client qui prend en paramètre la facture et va produire le chèque :
+- Clé publique du commerçant chiffrée par le client
+- Clé publique du client chiffrée par la banque
+- Somme de la transaction et numéro unique chiffrés
+
+Lancement du programme (Exemple) : python3 generateCheck.py <fileFacture> <fileOutCheck>
