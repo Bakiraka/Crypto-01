@@ -91,7 +91,7 @@ Lancement du programme (Exemple) : python3 init.py
   Sortie : fichier facture généré
   La facture est sous la forme :
   > uniqueid
-  > produit1 prix1 quantitéproduit1
+   produit1 prix1 quantitéproduit1
   > produit2 prix2 quantitéproduit2
   > sommedesprix
 
@@ -103,11 +103,15 @@ Lancement du programme (Exemple) : python3 init.py
                       le fichier qui contiendra le cheque
 
 Programme du client qui prend en paramètre la facture et va produire le chèque :
-- Clé publique du commerçant chiffrée par le client
-- Clé publique du client chiffrée par la banque
-- Somme de la transaction et numéro unique chiffrés
+```  
+  Clé publique du commerçant chiffrée par le client
+  Clé publique du client chiffrée par la banque
+  Somme de la transaction et numéro unique chiffrés
+```
 
-Lancement du programme (Exemple) : python3 generateCheck.py <fileFacture> <fileOutCheck>
+**Lancement du programme (Exemple) :**
+
+``` python3 generateCheck.py <fileFacture> <fileOutCheck> ```
 
 4. merchant_verif_invoice_n_check.py
   Programme du marchand vérifiant si un chèque a ou non été modifié.
@@ -116,9 +120,9 @@ Lancement du programme (Exemple) : python3 generateCheck.py <fileFacture> <fileO
   - chèque "signé" par le client
   - clée publique du client
   - clée publique du marchand
-  Sortie :
-  Sur la sortie standard : que le chèque est bon ou pas.
 
+  **Sortie :**
+ *Sur la sortie standard :* que le chèque est bon ou pas.
 
 5. bank_check.py
 
@@ -130,5 +134,5 @@ Lancement du programme (Exemple) : python3 generateCheck.py <fileFacture> <fileO
   - clée publique du marchand
   Sortie : Une indication si le chèque a bien été encaissé ou non.
 
-  Fonctionnement : la banque va utiliser les 40 premiers caractères de la clée publique du marchand pour faire un fichier d'historique.
-  Elle va ainsi pouvoir vérifier rapidement dans ce fichier, l'existence ou non de l'id unique associé à la clée publique du client.
+  Fonctionnement :
+  La banque va utiliser les 40 premiers caractères de la clée publique du marchand pour faire un fichier d'historique. Elle va ainsi pouvoir vérifier rapidement dans ce fichier, l'existence ou non de l'id unique associé à la clée publique du client.
