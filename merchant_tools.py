@@ -5,10 +5,10 @@ import os
 
 #basic unique id random generation
 def randomnumber():
-    try:
-        rand = os.urandom(150)
-    except NotImplementedError:
-        rand = random.getrandbits(150)
+#    try:
+#        rand = int(os.urandom(150))
+#    except NotImplementedError:
+    rand = random.getrandbits(150)
     return rand
 
 def save_unique_id(uid):
@@ -20,8 +20,9 @@ def check_uid_exist(uid):
     try:
         uids_file = open("idgenerated", 'r')
     except (OSError, IOError) as error:
-        print("Could not check if the uid exists, Error reading file : ", error)
+#        print("Could not check if the uid exists, Error reading file : ", error)
         return False
+
     line = uids_file.readline()
     while(line):
 #        print("comparing " + line + " and " + uid)
