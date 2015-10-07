@@ -19,8 +19,8 @@ if __name__ == '__main__' :
     commercantpk1 = rsatool.cryptblock(clientsk, commercantpk[0])
     commercantpk2 = rsatool.cryptblock(clientsk, commercantpk[1])
     ''' crypt des informations de la facture par le client'''
-    cryptUid = rsatool.decrypt(clientsk, fact.getUid())
-    cryptSum = rsatool.decrypt(clientsk, fact.getTotalSomme())
+    cryptUid = rsatool.cryptblock(clientsk, fact.getUid())
+    cryptSum = rsatool.cryptblock(clientsk, fact.getTotalSomme())
     checkTotal = open(fichierout, 'w')
     ''' stockage des informations de la forme :
           1) la clé publique du client cryptée par la banque
@@ -29,7 +29,7 @@ if __name__ == '__main__' :
     '''
     checkTotal.write(fileutil.formatKey(clientpkencrypt) + '\n' + fileutil.formatKey(clientpkencrypt2) + '\n')
     checkTotal.write(fileutil.formatKey(commercantpk1) + '\n' + fileutil.formatKey(commercantpk2) + '\n')
-    checkTotal.write(str(cryptUid) + '\n' + str(cryptSum))
+    checkTotal.write(fileutil.formatKey(cryptUid) + '\n' + fileutil.formatKey(cryptSum))
     checkTotal.close()
     
     
