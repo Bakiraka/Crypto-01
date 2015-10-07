@@ -66,7 +66,7 @@ Quand la banque reçoit le chèque, la banque signera le chèque et le gardera e
   - Clé publique du client chiffrée par la banque
   - Somme de la transaction et numéro unique chiffrés
 4. Programme du commerçant : prend facture et le chèque et répond si c’est ok ou pas
-  - Vérifie que les données a. et b. de 3. n’ont pas été altérées par le client
+  - Vérifie que les données du chèque n’ont pas été altérées par le client
 5. Programme de la banque : va prendre chèque et effectue la transaction (ou pas)
   - S’assure que le chèque n’est pas une copie d’un chèque déjà déposé
   - Vérifie que le chèque a bien été chiffré par le client
