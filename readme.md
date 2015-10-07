@@ -74,7 +74,7 @@ Quand la banque reçoit le chèque, la banque signera le chèque et le gardera e
 ## Fonctionnement des programmes
 
 
-1er programme : init.py
+1. 1er programme : init.py
 
 - Génération clé publique/privée banque
 - Génération clé publique/privée client
@@ -83,7 +83,22 @@ Quand la banque reçoit le chèque, la banque signera le chèque et le gardera e
 
 Lancement du programme (Exemple) : python3 init.py
 
-3eme programme : generateCheck.py
+
+2. merchant_generate_invoice.py
+
+  Programme du marchand générant une facture.
+  Paramètres : (optionnel) Nombre de produits à générer
+  Sortie : fichier facture généré
+  La facture est sous la forme :
+  > uniqueid
+  > produit1 prix1 quantitéproduit1
+  > produit2 prix2 quantitéproduit2
+  > sommedesprix
+
+  L'unique id généré tente d'utiliser le générateur d'aléatoires fourni par le système d'exploitation.
+  La fonction os.urandom() va par exemple chercher dans * /dev/urandom * sur un système unix.
+
+3. 3eme programme : generateCheck.py
            prend 2 parametres : le fichier contenant la facture
                       le fichier qui contiendra le cheque
 
@@ -93,3 +108,27 @@ Programme du client qui prend en paramètre la facture et va produire le chèque
 - Somme de la transaction et numéro unique chiffrés
 
 Lancement du programme (Exemple) : python3 generateCheck.py <fileFacture> <fileOutCheck>
+
+4. merchant_verif_invoice_n_check.py
+  Programme du marchand vérifiant si un chèque a ou non été modifié.
+  Paramètres :
+  - fichier facture
+  - chèque "signé" par le client
+  - clée publique du client
+  - clée publique du marchand
+  Sortie :
+  Sur la sortie standard : que le chèque est bon ou pas.
+
+
+5. bank_check.py
+
+  Programme de la banque qui va encaisser un chèque.
+  Vérifie si un chèque a déjà été encaissé ou non.
+  Arguments :
+  - fichier chèque
+  - clée publique du client
+  - clée publique du marchand
+  Sortie : Une indication si le chèque a bien été encaissé ou non.
+
+  Fonctionnement : la banque va utiliser les 40 premiers caractères de la clée publique du marchand pour faire un fichier d'historique.
+  Elle va ainsi pouvoir vérifier rapidement dans ce fichier, l'existence ou non de l'id unique associé à la clée publique du client.
