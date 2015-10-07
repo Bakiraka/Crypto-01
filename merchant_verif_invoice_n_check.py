@@ -44,11 +44,7 @@ clientkeybanqueciphered.append(fileutils.readKey(sys.argv[2],3))
 
 uid_ciphered = fileutils.readKey(sys.argv[2],4)
 sum_ciphered = fileutils.readKey(sys.argv[2],5)
-'''
-print("######################################")
-print(clientkeybanqueciphered)
-print("######################################")
-'''
+
 clepub_client = [rsatools.decryptblock(bankPk, clientkeybanqueciphered[0]), rsatools.decryptblock(bankPk, clientkeybanqueciphered[1])]
 clepub_merchant = [rsatools.decryptblock( clepub_client, merchantkeyclientciphered[0]), rsatools.decryptblock( clepub_client, merchantkeyclientciphered[1])]
 

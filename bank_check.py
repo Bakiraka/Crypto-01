@@ -57,7 +57,10 @@ if( merchant_key_deciphered != merchant_key_original):
 
 #Getting the ciphered uid and sum from the check and deciphering it
 uidciphered = fileutils.readKey(sys.argv[1],4)
-uiddeciphered = rsatools.decryptblock(clientkey_deciphered,uidciphered)
+uid_deciphered = rsatools.decryptblock(clientkey_deciphered,uidciphered)
+
+sum_ciphered = fileutils.readKey(sys.argv[1],5)
+sum_deciphered = rsatools.decryptblock(clientkey_deciphered, sum_ciphered)
 
 saved_idandkey = []
 somethingswrong = False
@@ -68,12 +71,16 @@ if(os.path.isfile(mercfirstchar + ".sv")):
     #openning the file and checking if the id/client's key couple isn't there already
     with open(mercfirstchar + ".sv", 'r') as merchant_historyfile:
         for line in merchant_historyfile:
-            if(int(line) == uiddeciphered):
+            elementsatester = line.split("|")
+            # elementsatester[0] -> uid
+            # elementsatester[2] -> sum
+            if(int(elementsatester[0]) == uid_deciphered and int(elementsatester[1]) == sum_deciphered):
+
                 print("Le couple identifiant unique/clée de client dans ce chèque est reconnu comme déjà ayant été encaissé !")
                 somethingswrong = True
 
 if(somethingswrong == False):
     filetowrite = open(mercfirstchar + ".sv", 'a')
-    filetowrite.write(str(uiddeciphered) + "\n")
+    filetowrite.write(str(uid_deciphered) + "|" + str(sum_deciphered) + "\n")
     filetowrite.close()
     print("ok !\n")
