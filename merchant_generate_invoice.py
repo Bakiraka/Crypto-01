@@ -2,7 +2,8 @@
 
 ###################################################################
 ####    Merchant program generating and invoice                ####
-####    Arguments (optionals) : Number of products             ####
+####    Arguments : Name of the invoice                        ####
+####                (optional) Number of products              ####
 ####    Output : Invoice generated                             ####
 ####    The invoice will be of the form :                      ####
 ####    unique id                                              ####
@@ -15,19 +16,24 @@ import random
 import sys
 
 #checking the arguments
-if( len(sys.argv) >= 2 ):
-    #Number of products generated
-    try:
-        number_of_products = int(sys.argv[1])
-    except (ValueError):
-        print("Number of products given in parameter is wrong !")
-        sys.exit()
-    if(number_of_products < 1):
-        print("Number of products given in parameter is wrong !")
-        sys.exit()
+if( len(sys.argv) < 2 ):
+    print("Not enough arguments provided, exiting...")
+    sys.exit()
 else:
-    #We'll generate up to 5 products
-    number_of_products = random.randrange(1, 6)
+    if( len(sys.argv) == 3):
+        #Number of products generated
+        try:
+            number_of_products = int(sys.argv[2])
+        except (ValueError):
+            print("Number of products given in parameter is wrong !")
+            sys.exit()
+        if(number_of_products < 1):
+            print("Number of products given in parameter is wrong !")
+            sys.exit()
+    else:
+        #We'll generate up to 5 products
+        number_of_products = random.randrange(1, 6)
+    nameofinvoice = sys.argv[1]
 
 #Guid generation
 #unique_number = str(merchant_tools.randomnumber())
@@ -52,7 +58,7 @@ for i in range(0, number_of_products * 2):
     sum += product_cost
 
 #File writing
-invoice_file = open('invoice.txt', 'w')
+invoice_file = open(nameofinvoice, 'w')
 invoice_file.write( unique_number + "\n")
 for i in range(0, number_of_products * 2, 2):
     invoice_file.write(products_list[i] + " " + products_list[i+1] + " 1")
