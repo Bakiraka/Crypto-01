@@ -51,5 +51,5 @@ if(sum_n_id[1] != facture.getTotalSomme()):
     print("Elements différents lors de la vérification (Somme totale de la facture)")
 
 #checking if the merchant's public key ciphered by the client is right
-if(RSAtools.decrypt(clepub_client, clepub_merchant_clientciphered) != clepub_merchant)
+if(RSAtools.decrypt(clepub_client, clepub_merchant_clientciphered) != clepub_merchant):
     print("Elements différents lors de la vérification (clée du marchant chiffrée par le client)")

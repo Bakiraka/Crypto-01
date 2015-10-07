@@ -5,7 +5,7 @@ case "$1" in
     ;;
 '2')
   printf "Lancement de merchant_generate_invoice.py...\n"
-  printf "Génération de 5 produits dans le fichier test_invoice.."
+  printf "Génération de 5 produits dans le fichier test_invoice..\n"
   python3.4 merchant_generate_invoice.py test_invoice 5
     ;;
 '3')
