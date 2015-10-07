@@ -8,7 +8,7 @@ if __name__ == '__main__' :
     fichierout = sys.argv [2]
     fact = Facture(fichier)
     rsatool = RSAtools()
-    print(fact.toString())
+    print('\n' + fact.toString() + '\n')
     fileutil = FileUtils()
     ''' recuperation des clés RSA'''
     clientsk = fileutil.recupKey('clientSk')

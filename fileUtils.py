@@ -41,7 +41,7 @@ class FileUtils :
         tmp = []
         fileRead = open(fichier,'r')
         nb = 0
-        tmp2 = 0
+        tmp2 = -1
         ''' on lit toute les lignes '''
         for j in fileRead:
             ''' si il s'agit d'un début d'encrypt, on stocke le nombre de ligne de celui ci'''
@@ -52,12 +52,12 @@ class FileUtils :
             else :
                 tmp.append(int(j))
     #         si on arrive a la fin de la clé, si c'est la clé qu'on veut on stop, sinon on remet a zero les compteurs et on incremente le compteur de clé
-            if tmp2 == nb - 1 :
-                if i == number :
-                    break
-                i = i + 1
-                tmp2 = 0
-                nb = 0
+                if tmp2 == nb - 1:
+                    if i == number :
+                        break
+                    i = i + 1
+                    tmp2 = -2
+                    nb = 0
             tmp2 = tmp2 + 1
         ''' fermeture du fichier '''
         fileRead.close()
