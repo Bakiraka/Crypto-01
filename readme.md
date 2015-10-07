@@ -14,7 +14,7 @@ Présomption de départ : le client doit avoir sa clé publique signée par la b
 
 La transaction se fait de façon active (échange entre les acteurs).
 
-Le chèque contient 3 informations principales :
+Le chèque contient 4 informations principales :
  - Le chiffrement par le client de la clé publique du commerçant
  - Le chiffrement par la banque de la clé publique du client  
  - La somme de la transaction (en nombre entier)
