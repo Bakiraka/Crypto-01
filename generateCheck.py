@@ -27,8 +27,8 @@ if __name__ == '__main__' :
           2) la clé publique du commercant cryptée par le client
           3) le crypté de L'Uid et le Montant de la facture
     '''
-    checkTotal.write(fileutil.formatKey(clientpkencrypt) + '\n' + fileutil.formatKey(clientpkencrypt2) + '\n')
     checkTotal.write(fileutil.formatKey(commercantpk1) + '\n' + fileutil.formatKey(commercantpk2) + '\n')
+    checkTotal.write(fileutil.formatKey(clientpkencrypt) + '\n' + fileutil.formatKey(clientpkencrypt2) + '\n')
     checkTotal.write(fileutil.formatKey(cryptUid) + '\n' + fileutil.formatKey(cryptSum))
     checkTotal.close()
     
