@@ -10,9 +10,9 @@
 ####    Output : Either that the check is fine or not          ####
 ###################################################################
 import sys
-import FileUtils
-import Facture
-import RSAtools
+from facture import Facture
+from fileUtils import FileUtils
+from RSAtools import RSAtools
 
 if( len(sys.argv) < 4 ):
     print("You need to put all of the arguments (invoice file, signed check and client's Pk)")
@@ -27,11 +27,11 @@ try:
 except (OSError, IOError) as error:
     print("Error reading file : ", error)
     sys.exit()
-
+fileutils = FileUtils()
 #Getting the infos from the files
-clepub_client = FileUtils.recupKey(sys.argv[3])
+clepub_client = fileutils.recupKey(sys.argv[3])
 facture = Facture(sys.argv[1])
-clepub_merchant = FileUtils.recupKey(sys.argv[4])
+clepub_merchant = fileutils.recupKey(sys.argv[4])
 
 #Lecture du chèque
 clepub_merchant_clientciphered = signedcheck_file.readline()
@@ -41,15 +41,15 @@ ciphered_check_w_clientpk = ""
 for lines in signedcheck_file:
     ciphered_check_w_clientpk += lines
 
+rsatools = RSAtools()
 #Decyphering the cypher of the sum and of the id by the client
-sum_n_id_clear = decrypt_pk_str(clepub_client, sum_n_id_ciphered)
+sum_n_id_clear = rsatools.decrypt(clepub_client, sum_n_id_ciphered)
 sum_n_id = sum_n_id_clear.split(" ")
 #Checking if they are the same than the one on the invoice
 if(sum_n_id[0] != facture.getUid()):
     print("Elements différents lors de la vérification (UID de la facture)")
 if(sum_n_id[1] != facture.getTotalSomme()):
     print("Elements différents lors de la vérification (Somme totale de la facture)")
-
 #checking if the merchant's public key ciphered by the client is right
-if(RSAtools.decrypt(clepub_client, clepub_merchant_clientciphered) != clepub_merchant):
+if(rsatools.decryptblock(clepub_client, clepub_merchant_clientciphered) != clepub_merchant):
     print("Elements différents lors de la vérification (clée du marchant chiffrée par le client)")

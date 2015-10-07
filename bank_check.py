@@ -17,10 +17,12 @@
 ####    If it's fine, the bank with cash the check and add     ####
 ####        the line to the right file                         ####
 ###################################################################
-import FileUtils
-import RSAtools
+from fileUtils import FileUtils
+from RSAtools import RSAtools
 import os.path
 
+fileutils = FileUtils()
+RSAtools = RSAtools()
 #Making sure the arguments and the files are there
 try:
     check_file = open(sys.argv[1], 'r')
@@ -35,7 +37,7 @@ clientkey_original = FileUtils.recupKey(sys.argv[2])
 merchant_key_original = FileUtils.recupKey(sys.argv[3])
 #Getting merchant's key ciphered by the client and deciphering it
 merchant_key_ciphered = check_file.readline()
-merchant_key_deciphered = RSAtools.decrypt( clientkey_original, merchant_key_ciphered)
+merchant_key_deciphered = RSAtools.decryptblock( clientkey_original, merchant_key_ciphered)
 
 if( merchant_key_deciphered != merchant_key_original):
     print("La clé du marchant dans le chèque n'est pas la même que celle fournie !\n")
@@ -44,7 +46,7 @@ if( merchant_key_deciphered != merchant_key_original):
 clientkey_ciphered = check_file.readline()
 bank_privatekey = FileUtils.recupKey('bankPk')
 #Deciphering the client's key
-clientkey_deciphered = RSAtools.decrypt( bank_privatekey, clientkey_ciphered)
+clientkey_deciphered = RSAtools.decryptblock( bank_privatekey, clientkey_ciphered)
 #Verification
 if( clientkey_deciphered != clientkey_original):
     print("La clé du client dans le chèque n'est pas la même que celle fournie !\n")
