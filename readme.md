@@ -153,3 +153,6 @@ python3.4 generateCheck.py <fileFacture> <fileOutCheck>
 
   Fonctionnement :
   La banque va utiliser les 40 premiers caractères de la clée publique du marchand pour faire un fichier d'historique. Elle va ainsi pouvoir vérifier rapidement dans ce fichier, l'existence ou non de l'id unique associé à la clée publique du client.
+
+## Tests
+Pour tester le programme, lancer ./testapps.sh $ , avec $ le numéro du programme a tester.
