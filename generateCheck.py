@@ -23,13 +23,11 @@ if __name__ == '__main__' :
     cryptSum = rsatool.cryptblock(clientsk, fact.getTotalSomme())
     checkTotal = open(fichierout, 'w')
     ''' stockage des informations de la forme :
-          1) la clé publique du client cryptée par la banque
-          2) la clé publique du commercant cryptée par le client
+          1) la clé publique du commercant cryptée par le client
+          2) la clé publique du client cryptée par la banque
           3) le crypté de L'Uid et le Montant de la facture
     '''
     checkTotal.write(fileutil.formatKey(commercantpk1) + '\n' + fileutil.formatKey(commercantpk2) + '\n')
     checkTotal.write(fileutil.formatKey(clientpkencrypt) + '\n' + fileutil.formatKey(clientpkencrypt2) + '\n')
     checkTotal.write(fileutil.formatKey(cryptUid) + '\n' + fileutil.formatKey(cryptSum))
     checkTotal.close()
-    
-    

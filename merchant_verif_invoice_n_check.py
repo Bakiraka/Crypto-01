@@ -5,8 +5,6 @@
 ####    the invoice and that the check is correct              ####
 ####    Arguments : - invoice file                             ####
 ####                - signed check                             ####
-####                - client's public key                      ####
-####                - merchant's public key                    ####
 ####    Output : Either that the check is fine or not          ####
 ###################################################################
 import sys
@@ -22,34 +20,47 @@ if( len(sys.argv) < 4 ):
 try:
     invoice_file = open(sys.argv[1], 'r')
     signedcheck_file = open(sys.argv[2], 'r')
-    clientkey_file = open(sys.argv[3], 'r')
-    merchant_key = open(sys.argv[4], 'r')
 except (OSError, IOError) as error:
     print("Error reading file : ", error)
     sys.exit()
 fileutils = FileUtils()
+rsatools = RSAtools()
+
 #Getting the infos from the files
 clepub_client = fileutils.recupKey(sys.argv[3])
 facture = Facture(sys.argv[1])
-clepub_merchant = fileutils.recupKey(sys.argv[4])
+clepub_merchant_original = fileutils.recupKey("commercantPk")
 
-#Lecture du chèque
-clepub_merchant_clientciphered = signedcheck_file.readline()
-clepub_client_bankciphered = signedcheck_file.readline()
-sum_n_id_ciphered = signedcheck_file.readline()
-ciphered_check_w_clientpk = ""
-for lines in signedcheck_file:
-    ciphered_check_w_clientpk += lines
+bankPk = fileutils.recupKey("banquePk")
 
-rsatools = RSAtools()
+merchantkeyclientciphered = []
+clientkeybanqueciphered = []
+
+merchantkeyclientciphered.append( fileutils.readKey(sys.argv[2],0))
+merchantkeyclientciphered.append( fileutils.readKey(sys.argv[2],1))
+
+clientkeybanqueciphered.append(fileutils.readKey(sys.argv[2],2))
+clientkeybanqueciphered.append(fileutils.readKey(sys.argv[2],3))
+
+uid_ciphered = fileutils.readKey(sys.argv[2],4)
+sum_ciphered = fileutils.readKey(sys.argv[2],5)
+'''
+print("######################################")
+print(clientkeybanqueciphered)
+print("######################################")
+'''
+clepub_client = [rsatools.decryptblock(bankPk, clientkeybanqueciphered[0]), rsatools.decryptblock(bankPk, clientkeybanqueciphered[1])]
+clepub_merchant = [rsatools.decryptblock( clepub_client, merchantkeyclientciphered[0]), rsatools.decryptblock( clepub_client, merchantkeyclientciphered[1])]
+
 #Decyphering the cypher of the sum and of the id by the client
-sum_n_id_clear = rsatools.decrypt(clepub_client, sum_n_id_ciphered)
-sum_n_id = sum_n_id_clear.split(" ")
+uid_clear = rsatools.decryptblock(clepub_client, uid_ciphered)
+sum_clear = rsatools.decryptblock(clepub_client, sum_ciphered)
+
 #Checking if they are the same than the one on the invoice
-if(sum_n_id[0] != facture.getUid()):
+if(uid_clear != facture.getUid()):
     print("Elements différents lors de la vérification (UID de la facture)")
-if(sum_n_id[1] != facture.getTotalSomme()):
+if(sum_clear != facture.getTotalSomme()):
     print("Elements différents lors de la vérification (Somme totale de la facture)")
 #checking if the merchant's public key ciphered by the client is right
-if(rsatools.decryptblock(clepub_client, clepub_merchant_clientciphered) != clepub_merchant):
+if(clepub_merchant != clepub_merchant_original):
     print("Elements différents lors de la vérification (clée du marchant chiffrée par le client)")

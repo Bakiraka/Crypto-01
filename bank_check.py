@@ -20,56 +20,60 @@
 from fileUtils import FileUtils
 from RSAtools import RSAtools
 import os.path
+import sys
 
 fileutils = FileUtils()
-RSAtools = RSAtools()
+rsatools = RSAtools()
 #Making sure the arguments and the files are there
-try:
-    check_file = open(sys.argv[1], 'r')
-    clientkey_file = open(sys.argv[2], 'r')
-    merchantkey_file = open(sys.argv[3], 'r')
-finally:
-    clientkey_file.close()
-    merchantkey_file.close()
+clientkey_file = open(sys.argv[2], 'r')
+merchantkey_file = open(sys.argv[3], 'r')
 
 #Getting client's key and merchant's original key
-clientkey_original = FileUtils.recupKey(sys.argv[2])
-merchant_key_original = FileUtils.recupKey(sys.argv[3])
-#Getting merchant's key ciphered by the client and deciphering it
-merchant_key_ciphered = check_file.readline()
-merchant_key_deciphered = RSAtools.decryptblock( clientkey_original, merchant_key_ciphered)
-
-if( merchant_key_deciphered != merchant_key_original):
-    print("La clé du marchant dans le chèque n'est pas la même que celle fournie !\n")
+clientkey_original = fileutils.recupKey(sys.argv[2])
+merchant_key_original = fileutils.recupKey(sys.argv[3])
 
 #Getting client's key ciphered by the bank and bank's private key
-clientkey_ciphered = check_file.readline()
-bank_privatekey = FileUtils.recupKey('bankPk')
+clientkeybanqueciphered = []
+clientkeybanqueciphered.append(fileutils.readKey(sys.argv[1],2))
+clientkeybanqueciphered.append(fileutils.readKey(sys.argv[1],3))
+
+bank_publickey = fileutils.recupKey('banquePk')
 #Deciphering the client's key
-clientkey_deciphered = RSAtools.decryptblock( bank_privatekey, clientkey_ciphered)
+clientkey_deciphered = [rsatools.decryptblock(bank_publickey, clientkeybanqueciphered[0]), rsatools.decryptblock(bank_publickey, clientkeybanqueciphered[1])]
+
 #Verification
 if( clientkey_deciphered != clientkey_original):
     print("La clé du client dans le chèque n'est pas la même que celle fournie !\n")
 
+
+#Getting merchant's key ciphered by the client and deciphering it
+merchantkeyclientciphered = []
+merchantkeyclientciphered.append( fileutils.readKey(sys.argv[1],0))
+merchantkeyclientciphered.append( fileutils.readKey(sys.argv[1],1))
+merchant_key_deciphered = [rsatools.decryptblock( clientkey_deciphered, merchantkeyclientciphered[0]), rsatools.decryptblock( clientkey_deciphered, merchantkeyclientciphered[1])]
+
+if( merchant_key_deciphered != merchant_key_original):
+    print("La clé du marchant dans le chèque n'est pas la même que celle fournie !\n")
+
 #Getting the ciphered uid and sum from the check and deciphering it
-uidciphered = check_file.readline()
-uiddeciphered = RSAtools.decrypt(clientkey_deciphered,uidciphered)
+uidciphered = fileutils.readKey(sys.argv[1],4)
+uiddeciphered = rsatools.decryptblock(clientkey_deciphered,uidciphered)
 
 saved_idandkey = []
 somethingswrong = False
 ####Making sure the check hasn't already been cashed
 #Verifying if we already have or not a file with the merchant's 40 first key characters
-mercfirstchar = merchant_key_deciphered[:40]
-if(os.path.isfile(mercfirstchar))
+mercfirstchar = str(merchant_key_deciphered [0]) [:40]
+if(os.path.isfile(mercfirstchar + ".sv")):
     #openning the file and checking if the id/client's key couple isn't there already
-    with open(mercfirstchar, 'r') as merchant_historyfile:
-    for line in merchant_historyfile:
-        saved_idandkey = line.split(" ", 2)
-        if(saved_idandkey[0] == uiddeciphered && saved_idandkey[1] == clientkey_original):
-            print("Le couple identifiant unique/clée de client dans ce chèque est reconnu comme déjà ayant été encaissé !")
-            somethingswrong = True
+    with open(mercfirstchar + ".sv", 'r') as merchant_historyfile:
+        for line in merchant_historyfile:
+            if(int(line) == uiddeciphered):
+                print("Le couple identifiant unique/clée de client dans ce chèque est reconnu comme déjà ayant été encaissé !")
+                somethingswrong = True
 
 if(somethingswrong == False):
-    filetowrite = open(mercfirstchar, 'a')
-    filetowrite.write(uidciphered + " " + clientkey_original + "\n")
+    filetowrite = open(mercfirstchar + ".sv", 'a')
+    filetowrite.write(str(uiddeciphered) + "\n")
     filetowrite.close()
+    print("ok !\n")

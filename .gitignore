@@ -7,3 +7,11 @@ invoice.txt
 checkhistory
 test_check
 test_invoice
+clientPk
+clientSk
+commercantPk
+commercantSk
+banqueSk
+banquePk
+clientPkEncode
+*.sv
