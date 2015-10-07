@@ -87,7 +87,9 @@ Lancement du programme (Exemple) : python3 init.py
 2. merchant_generate_invoice.py
 
   Programme du marchand générant une facture.
-  Paramètres : (optionnel) Nombre de produits à générer
+  Paramètres :
+  - Nom de la facture a générer
+  - (optionnel) Nombre de produits à générer
   Sortie : fichier facture généré
   La facture est sous la forme :
   > uniqueid
@@ -95,6 +97,10 @@ Lancement du programme (Exemple) : python3 init.py
   > produit2 prix2 quantitéproduit2
   > sommedesprix
 
+**Lancement du programme :**
+  ```
+  python3.4 merchant_generate_invoice.py <test_invoice> ?numberofproducts?
+  ```
   L'unique id généré tente d'utiliser le générateur d'aléatoires fourni par le système d'exploitation.
   La fonction os.urandom() va par exemple chercher dans * /dev/urandom * sur un système unix.
 
@@ -109,11 +115,12 @@ Programme du client qui prend en paramètre la facture et va produire le chèque
   Somme de la transaction et numéro unique chiffrés
 ```
 
-**Lancement du programme (Exemple) :**
+**Lancement du programme :**
+```
+python3.4 generateCheck.py <fileFacture> <fileOutCheck>
+```
 
-``` python3 generateCheck.py <fileFacture> <fileOutCheck> ```
-
-4. merchant_verif_invoice_n_check.py
+ 4. merchant_verif_invoice_n_check.py
   Programme du marchand vérifiant si un chèque a ou non été modifié.
   Paramètres :
   - fichier facture
@@ -123,6 +130,10 @@ Programme du client qui prend en paramètre la facture et va produire le chèque
 
   **Sortie :**
  *Sur la sortie standard :* que le chèque est bon ou pas.
+ **Lancement du programme :**
+ ```
+ python3.4 merchant_verif_invoice_n_check.py <test_invoice> <test_check> <clientPk> <commercantPk>
+ ```
 
 5. bank_check.py
 
@@ -133,6 +144,10 @@ Programme du client qui prend en paramètre la facture et va produire le chèque
   - clée publique du client
   - clée publique du marchand
   Sortie : Une indication si le chèque a bien été encaissé ou non.
+  **Lancement du programme :**
+  ```
+  python3.4 bank_check.py <test_check> <clientPk> <commercantPk>
+  ```
 
   Fonctionnement :
   La banque va utiliser les 40 premiers caractères de la clée publique du marchand pour faire un fichier d'historique. Elle va ainsi pouvoir vérifier rapidement dans ce fichier, l'existence ou non de l'id unique associé à la clée publique du client.
