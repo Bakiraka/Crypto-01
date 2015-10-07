@@ -11,10 +11,6 @@ def randomnumber():
         rand = random.getrandbits(150)
     return rand
 
-#guid generation
-def generate_uuid():
-    return str(uuid.uuid4())
-
 def save_unique_id(uid):
     uids_file = open("idgenerated", 'a')
     uids_file.write(str(uid) + "\n")
