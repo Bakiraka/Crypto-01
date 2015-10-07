@@ -2,6 +2,8 @@
  **Cryptographie Avancée : Problème du chèque**
 ---
 
+Lien dépot Github : https://github.com/Bakiraka/Crypto-01
+
 *Description rapide du problème :*
 >Nous avons 3 acteurs : un client, un commerçant, une banque.
 Comment faire en sorte qu’une transaction commerciale grave à un chèque puisse être effectuée, en supposant par exemple que ni le client, ni le commerçant ne peuvent contacter la banque pendant l’achat (les deux sont dans un avion), et cela sans qu’aucun acteur ne puisse tricher sur les autres ?
