@@ -5,7 +5,7 @@ class FileUtils :
     ''' recupere les clés RSA de leur fichier '''
     def recupKey (self, fichier):
         return list(map(int,self.recupLine(fichier).split()))
-        
+
     ''' recupere un seul crypté '''
     def recupEncrypt(self, fichier) :
         return self.recupLine(fichier)
@@ -23,7 +23,7 @@ class FileUtils :
         accu = str(len(key)) + '\n'
         tmp = 0
         for i in key :
-            accu += str(i) 
+            accu += str(i)
             if tmp < len(key) - 1 :
                 accu += '\n'
             tmp = tmp + 1
@@ -48,10 +48,10 @@ class FileUtils :
             if nb == 0 :
                 tmp.clear()
                 nb = int(j)
-            ''' sinon, on le stocke dans notre liste'''
+    #        sinon, on le stocke dans notre liste
             else :
                 tmp.append(int(j))
-            ''' si on arrive a la fin de la clé, si c'est la clé qu'on veut on stop, sinon on remet a zero les compteurs et on incremente le compteur de clé'''
+    #         si on arrive a la fin de la clé, si c'est la clé qu'on veut on stop, sinon on remet a zero les compteurs et on incremente le compteur de clé
             if tmp2 == nb - 1 :
                 if i == number :
                     break
@@ -59,8 +59,6 @@ class FileUtils :
                 tmp2 = 0
                 nb = 0
             tmp2 = tmp2 + 1
-        ''' fermeture du fichier '''    
+        ''' fermeture du fichier '''
         fileRead.close()
         return tmp
-        
-        
