@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 ###################################################################
 ####    Merchant program generating and invoice                ####
 ####    Arguments : Name of the invoice                        ####
@@ -24,49 +23,62 @@ else:
     if( len(sys.argv) == 4):
         #Number of products generated
         try:
-            number_of_products = int(sys.argv[3])
+            invoice_nbrof_products = int(sys.argv[3])
         except (ValueError):
             print("Number of products given in parameter is wrong !")
             sys.exit()
-        if(number_of_products < 1):
+        if(invoice_nbrof_products < 1):
             print("Number of products given in parameter is wrong !")
             sys.exit()
     else:
         #We'll generate up to 5 products
-        number_of_products = random.randrange(1, 6)
+        invoice_nbrof_products = random.randrange(1, 6)
     nameofinvoice = sys.argv[1]
+    invoice_sum = int(sys.argv[2])
+
+if(int(invoice_nbrof_products) > invoice_sum):
+    print("Can't create an invoice of " + str(invoice_nbrof_products) + " products with a total sum of " + str(invoice_sum))
+    print("\nExiting...")
+    sys.exit()
 
 #Guid generation
-#unique_number = str(merchant_tools.randomnumber())
 unique_number = str(merchant_tools.randomnumber())
 while(merchant_tools.check_uid_exist(unique_number)):
     unique_number = str(merchant_tools.randomnumber())
 merchant_tools.save_unique_id(unique_number)
 #unique_number = guid_generation.generate_uuid()
 
-#products_list initialisation
+print("Generating " + str(invoice_nbrof_products))
+#Products generation
 products_list = []
-
-#Product generation
-invoice_sum = int(sys.argv[2])
 invoice_rest = invoice_sum
-i = number_of_products
+i = invoice_nbrof_products
 while i > 0:
     product_number = random.randrange(0, 100)
     product_name = "Product" + str(product_number)
     #Price generation (kindof random, depending on product name, but always the same)
     random.seed(product_number)
-    product_cost = random.randrange(number_of_products - i + 1, invoice_rest, 2)
-    products_list = products_list + [product_name, str(product_cost)]
+    try:
+        if(i == 1):
+            product_cost = invoice_rest
+        elif(i == invoice_rest):
+            product_cost = i / invoice_rest
+        else:
+            product_cost = random.randrange(i, invoice_rest, 2)
+    except:
+        print("Bleme")
+        print("nbr of products :" + str(invoice_nbrof_products) + "\ni :" + str(i) + "\nRest : " + str(invoice_rest))
+    products_list.append([product_name, str(product_cost)])
     invoice_rest = invoice_rest - product_cost
     i = i - 1
 
 #File writing
 invoice_file = open(nameofinvoice, 'w')
 invoice_file.write( unique_number + "\n")
-for i in range(0, number_of_products * 2, 2):
-    invoice_file.write(products_list[i] + " " + products_list[i+1] + " 1")
-    invoice_file.write("\n")
+for i in range(0, invoice_nbrof_products):
+    test = products_list.pop()
+    print(test)
+#    invoice_file.write(products_list[i][1] + " " + products_list[i][2] + " 1")
+#    invoice_file.write("\n")
 invoice_file.write(str(invoice_sum))
-
 invoice_file.close()
