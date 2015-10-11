@@ -64,7 +64,7 @@ while i > 0:
         elif(i == invoice_rest):
             product_cost = i / invoice_rest
         else:
-            product_cost = random.randrange(i, invoice_rest, 2)
+            product_cost = random.randrange(i, invoice_rest - i, 2)
     except:
         print("Bleme")
         print("nbr of products :" + str(invoice_nbrof_products) + "\ni :" + str(i) + "\nRest : " + str(invoice_rest))
