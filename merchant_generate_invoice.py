@@ -57,28 +57,31 @@ while i > 0:
     product_number = random.randrange(0, 100)
     product_name = "Product" + str(product_number)
     #Price generation (kindof random, depending on product name, but always the same)
-    random.seed(product_number)
+    #random.seed(product_number)
     try:
         if(i == 1):
             product_cost = invoice_rest
         elif(i == invoice_rest):
-            product_cost = i / invoice_rest
+            product_cost = 1
         else:
-            product_cost = random.randrange(i, invoice_rest - i, 2)
-    except:
+            product_cost = random.randrange(1, invoice_rest - i, 2)
+    except ValueError as e:
+        print(str(e))
         print("Bleme")
         print("nbr of products :" + str(invoice_nbrof_products) + "\ni :" + str(i) + "\nRest : " + str(invoice_rest))
+        product_cost = 1
     products_list.append([product_name, str(product_cost)])
     invoice_rest = invoice_rest - product_cost
     i = i - 1
+
+#Messing with the list generated
+random.shuffle(products_list)
 
 #File writing
 invoice_file = open(nameofinvoice, 'w')
 invoice_file.write( unique_number + "\n")
 for i in range(0, invoice_nbrof_products):
-    test = products_list.pop()
-    print(test)
-#    invoice_file.write(products_list[i][1] + " " + products_list[i][2] + " 1")
-#    invoice_file.write("\n")
+    invoice_file.write(products_list[i][0] + " " + products_list[i][1] + " 1")
+    invoice_file.write("\n")
 invoice_file.write(str(invoice_sum))
 invoice_file.close()
