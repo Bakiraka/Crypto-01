@@ -94,25 +94,11 @@ class RSAtools :
 
     def encrypt(self, pk, msg):
         return pow(msg, pk [1], pk [0])
-
-    def decrypt(self, sk, cipher):
-        return pow(cipher, sk [1], sk [0])
-    '''encrypte une chaine de caractere avec RSA'''
-    def encrypt_str(self, pk, msg):
-        x = binascii.hexlify(msg.encode('UTF-8'))
-        msgint = int(x,16)
-        return self.encrypt(pk, msgint)
-    ''' decrypte une chaine de caractere avec RSA '''
-    def decrypt_str(self, sk, cipher):
-        decrypt = self.decrypt(sk, cipher)
-        decrypthex = hex(decrypt) [2:]
-        y = binascii.unhexlify(decrypthex)
-        decryptstr = str(y,'UTF-8')
-        return decryptstr
+    
     def str_to_key (self, string) :
         return string.split()
         return accu
-    ''' encrypte un nombre de n bits en le découpant par bloc '''
+    #''' encrypte un nombre de n bits en le découpant par bloc '''
     def cryptblock (self, sk, message) :
         tmp = message 
         listmess = []

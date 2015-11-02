@@ -1,17 +1,19 @@
 import os
 from RSAtools import RSAtools
 from fileUtils import FileUtils
-
+# This file generate :
+# RSA public and private key for the bank, the commercant and the client
+# Crypt of the public key of client by the bank SK, To garantee that the client is in this bank
 if __name__ == '__main__' :
     rsa = RSAtools()
     fileUtil = FileUtils()
-    '''generation des clés RSA'''
+    # generation des clés RSA
     rsaClient = rsa.generateRSAkey(1024)
     rsaCommercant = rsa.generateRSAkey(1024)
     rsaBanque = rsa.generateRSAkey(1024)
 
     """n,e,d"""
-    '''ecriture des clés dans leur fichiers respectifs'''
+    # ecriture des clés dans leur fichiers respectifs
     clientpk = open('clientPk','w')
     clientpk.write(str(rsaClient [0])+' '+str(rsaClient [1]))
     clientpk.close()
@@ -31,7 +33,8 @@ if __name__ == '__main__' :
     banquesk.write(str(rsaBanque [0])+' '+ str(rsaBanque [2]))
     banquesk.close()
     print([rsaClient [0],rsaClient[1]])
-    '''Cryptage de la clé publique du client par la clé secrete de la banque'''
+    # Cryptage de la clé publique du client par la clé secrete de la banque
+    # Test des fonctions de cryptage et decryptage par bloc
     clientpkencode = rsa.cryptblock(fileUtil.recupKey('banqueSk'), rsaClient [0])
     clientpkdecode = rsa.decryptblock(fileUtil.recupKey('banquePk'), clientpkencode)
     clientpkencode2 = rsa.cryptblock(fileUtil.recupKey('banqueSk'), rsaClient [1])
